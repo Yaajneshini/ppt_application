@@ -133,7 +133,6 @@
         // Show selected file name
         const fileInput = document.getElementById("ppt_template");
         const fileChosen = document.getElementById("file-chosen");
-
         fileInput.addEventListener("change", function(){
             fileChosen.textContent = this.files[0].name;
         })

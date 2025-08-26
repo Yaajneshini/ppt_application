@@ -12,7 +12,6 @@ OUTPUT_FOLDER = 'generated'
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 os.makedirs(OUTPUT_FOLDER, exist_ok=True)
 
-
 @app.route('/')
 def index():
     return render_template('index.html')
@@ -150,7 +149,6 @@ def generate():
 
     except Exception as e:
         return f"Error in generate: {str(e)}", 500
-
 
 if __name__ == '__main__':
     app.run(debug=True)
