@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Parsed Slide Preview</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 1.5rem;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            background: #fafafa;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        /* Stylish button */
+        button {
+            background: linear-gradient(135deg, #4CAF50, #45a049);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 12px 24px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.15);
+        }
+
+        button:hover {
+            background: linear-gradient(135deg, #45a049, #3d8b40);
+            transform: translateY(-2px);
+            box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        button:active {
+            transform: translateY(0);
+            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Hide default file input */
+        input[type="file"] {
+            display: none;
+        }
+
+        /* Custom file upload label */
+        .file-upload-label {
+            display: inline-block;
+            background: linear-gradient(135deg, #2196F3, #1976D2);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0px 4px 6px rgba(0,0,0,0.15);
+        }
+
+        .file-upload-label:hover {
+            background: linear-gradient(135deg, #1976D2, #1565C0);
+            transform: translateY(-2px);
+            box-shadow: 0px 6px 10px rgba(0,0,0,0.2);
+        }
+
+        .file-upload-label:active {
+            transform: translateY(0);
+            box-shadow: 0px 2px 4px rgba(0,0,0,0.15);
+        }
+
+        /* Show file name */
+        #file-chosen {
+            margin-left: 10px;
+            font-style: italic;
+            color: #555;
+        }
+
+        hr {
+            margin: 2rem 0;
+        }
+
+        h2 {
+            margin-top: 1rem;
+            color: #444;
+        }
+
+        ul {
+            padding-left: 20px;
+        }
+
+        li {
+            margin-bottom: 6px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Slide Content Preview</h1>
+
+    <!-- Form to send parsed slides + template to /generate -->
+    <form action="/generate" method="post" enctype="multipart/form-data">
+        <!-- Hidden input containing parsed slides as JSON -->
+        <textarea name="slides" style="display:none;">{{ parsed_slides | tojson | safe }}</textarea>
+
+        <p>Please upload your PowerPoint template (design will be reused):</p>
+        
+        <!-- Custom file upload -->
+        <label for="ppt_template" class="file-upload-label">📂 Choose Template</label>
+        <input type="file" name="ppt_template" id="ppt_template" required>
+        <span id="file-chosen">No file chosen</span>
+        
+        <br><br>
+        <button type="submit">🚀 Generate PPT</button>
+    </form>
+
+    <hr>
+    <div>
+        {% for slide in parsed_slides %}
+            <h2>{{ slide.title }}</h2>
+            <ul>
+                {% for bullet in slide.bullets %}
+                    <li>{{ bullet }}</li>
+                {% endfor %}
+            </ul>
+        {% endfor %}
+    </div>
+
+    <script>
+        // Show selected file name
+        const fileInput = document.getElementById("ppt_template");
+        const fileChosen = document.getElementById("file-chosen");
+
+        fileInput.addEventListener("change", function(){
+            fileChosen.textContent = this.files[0].name;
+        })
+    </script>
+</body>
+</html>
