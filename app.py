@@ -4,14 +4,15 @@ from pptx import Presentation
 from datetime import datetime
 from pptx.util import Inches, Pt
 from io import BytesIO
+from flask_cors import CORS 
 
 app = Flask(__name__)
+CORS(app)
 
 UPLOAD_FOLDER = 'uploads'
 OUTPUT_FOLDER = 'generated'
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 os.makedirs(OUTPUT_FOLDER, exist_ok=True)
-
 
 @app.route('/')
 def index():
@@ -151,6 +152,5 @@ def generate():
     except Exception as e:
         return f"Error in generate: {str(e)}", 500
 
-
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=8080, debug=True)
